@@ -4,7 +4,7 @@
 	<skin>
 		<groupId>org.sentrysoftware.maven</groupId>
 		<artifactId>sentry-maven-skin</artifactId>
-		<version>6.2.00</version>
+		<version>6.4.01</version>
 	</skin>
 
 	<custom>
@@ -13,16 +13,17 @@
 	</custom>
 
 	<bannerLeft>
-		<src>images/sentry-logo-white.png</src>
-		<href>https://sentrysoftware.org</href>
+		<src>images/metricshub-logo-only.png</src>
+		<href>https://metricshub.org</href>
 	</bannerLeft>
 
 	<body>
 
 		<links>
 			<item name="GitHub Repository" href="${project.scm.url}" />
-			<item name="Jawk" href="https://sentrysoftware.org/jawk" />
+			<item name="Jawk" href="https://metricshub.org/jawk" />
 			<item name="Linux fprintf(...) Man Page" href="https://man7.org/linux/man-pages/man3/fprintf.3p.html" />
+			<item name="MetricsHub&reg;" href="https://metricshub.com" />
 		</links>
 
 		<menu name="User Documentation">

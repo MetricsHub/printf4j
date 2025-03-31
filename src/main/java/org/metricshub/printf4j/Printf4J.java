@@ -1,10 +1,10 @@
-package org.sentrysoftware.printf4j;
+package org.metricshub.printf4j;
 
 /*-
  * ╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲
  * Printf4J
  * ჻჻჻჻჻჻
- * Copyright 2023 Sentry Software
+ * Copyright 2023 MetricsHub
  * ჻჻჻჻჻჻
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,14 +66,14 @@ public class Printf4J {
 	 * </ul>
 	 */
 	private static final Pattern PERCENT_PATTERN = Pattern.compile(
-			"(?<percent>%%)|(?<eol>%n)|"
-			+ "(?<specifier>%(?<options>[ \\-+(#0]*)"
-			+ "(?<width>\\*|[1-9]+|(?:[1-9][0-9]+))?"
-			+ "(?:\\.(?<precision>[0-9]+))?"
-			+ "(?<other>[bBhHsScCtT]|"
-			+ "(?:L?(?<float>[eEfFgGaA]))|"
-			+ "(?:(?:hh|h|l|ll|j|z|t)?(?<int>[diuoxX]))))");
-
+		"(?<percent>%%)|(?<eol>%n)|" +
+		"(?<specifier>%(?<options>[ \\-+(#0]*)" +
+		"(?<width>\\*|[1-9]+|(?:[1-9][0-9]+))?" +
+		"(?:\\.(?<precision>[0-9]+))?" +
+		"(?<other>[bBhHsScCtT]|" +
+		"(?:L?(?<float>[eEfFgGaA]))|" +
+		"(?:(?:hh|h|l|ll|j|z|t)?(?<int>[diuoxX]))))"
+	);
 
 	/**
 	 * Convert a String, Integer, or Double to Double.
@@ -83,7 +83,6 @@ public class Printf4J {
 	 * @return the "double" value of o, or 0 if invalid
 	 */
 	public static double toDouble(final Object o) {
-
 		if (o == null) {
 			return 0;
 		}
@@ -93,7 +92,7 @@ public class Printf4J {
 		}
 
 		if (o instanceof Character) {
-			return (double)((Character)o).charValue();
+			return (double) ((Character) o).charValue();
 		}
 
 		// Try to convert the string to a number.
@@ -129,17 +128,16 @@ public class Printf4J {
 	 * @return the "long" value of o, or 0 if invalid
 	 */
 	public static long toLong(final Object o) {
-
 		if (o == null) {
 			return 0;
 		}
 
 		if (o instanceof Number) {
-			return ((Number)o).longValue();
+			return ((Number) o).longValue();
 		}
 
 		if (o instanceof Character) {
-			return (long)((Character)o).charValue();
+			return (long) ((Character) o).charValue();
 		}
 
 		// Try to convert the string to a number.
@@ -161,7 +159,6 @@ public class Printf4J {
 			} catch (NumberFormatException nfe) {
 				length--;
 			}
-
 		}
 		// Failed (not even with one char)
 		return 0;
@@ -179,7 +176,7 @@ public class Printf4J {
 			return Character.MIN_VALUE;
 		}
 		if (o instanceof Number) {
-			return (char)((Number)o).intValue();
+			return (char) ((Number) o).intValue();
 		}
 		String s = o.toString();
 		if (s.isEmpty()) {
@@ -187,7 +184,6 @@ public class Printf4J {
 		}
 		return s.charAt(0);
 	}
-
 
 	/**
 	 * Applies a format string to a set of parameters and
@@ -199,9 +195,7 @@ public class Printf4J {
 	 * @param arr Arguments to format.
 	 * @return The formatted string
 	 */
-	@SuppressWarnings("checkstyle:methodlength")
 	public static String sprintf(final Locale locale, final String format, final Object... arr) {
-
 		// We're processing each format specifier (%d, %-12s, etc.) and will slightly
 		// adapt the behavior of Java's Formatter to be like C's sprintf()
 		Matcher percentMatcher = PERCENT_PATTERN.matcher(format);
@@ -211,13 +205,11 @@ public class Printf4J {
 
 		// We will use a single Formatter instance (closeable)
 		try (Formatter formatter = new Formatter(formatResultBuilder, locale)) {
-
 			// Each argument is indexed and will match with the format specifiers we will find
 			int argumentIndex = 0;
 
 			// Loop through each matching format specifier
 			while (percentMatcher.find()) {
-
 				// Easy: %% -> %
 				if (percentMatcher.group("percent") != null) {
 					percentMatcher.appendReplacement(formatResultBuilder, "%");
@@ -313,7 +305,7 @@ public class Printf4J {
 				}
 				// '*' width uses an argument
 				if ("*".equals(width)) {
-					width = String.valueOf((int)arr[argumentIndex]);
+					width = String.valueOf((int) arr[argumentIndex]);
 					argumentIndex++;
 				}
 				// If width is specified, reduce it by the length of the prefix
@@ -337,134 +329,152 @@ public class Printf4J {
 				// Reconstruct the formatSpecifier
 				StringBuilder newFormatSpecifierBuilder = new StringBuilder(prefix);
 				newFormatSpecifierBuilder.append('%');
-				if (options != null) { newFormatSpecifierBuilder.append(options); }
-				if (width != null) { newFormatSpecifierBuilder.append(width); }
-				if (precision != null) { newFormatSpecifierBuilder.append('.').append(precision); }
+				if (options != null) {
+					newFormatSpecifierBuilder.append(options);
+				}
+				if (width != null) {
+					newFormatSpecifierBuilder.append(width);
+				}
+				if (precision != null) {
+					newFormatSpecifierBuilder.append('.').append(precision);
+				}
 				newFormatSpecifierBuilder.append(conversion);
 				formatSpecifier = newFormatSpecifierBuilder.toString();
 
 				// The logic will differ for each conversion type
 				switch (conversion) {
-
-				// %s: simple
-				case "s":
-					percentMatcher.appendReplacement(formatResultBuilder, "");
-					formatter.format(formatSpecifier, arr[argumentIndex]);
-					break;
-
-				// Integers: a bit more complicated!
-				case "d":
-				case "x":
-				case "X":
-				case "o":
-					if (precision == null) {
-						// If precision is not specified, Java's formatter works pretty much
-						// just like C's sprintf().
-						// We only need to make sure an integer is passed
-						// Example: %+03d
+					// %s: simple
+					case "s":
 						percentMatcher.appendReplacement(formatResultBuilder, "");
-						formatter.format(formatSpecifier, toLong(arr[argumentIndex]));
+						formatter.format(formatSpecifier, arr[argumentIndex]);
 						break;
-
-					} else {
-						// If precision is specified, we need to process this case manually
-						// because Java's formatter doesn't support specifying precision for
-						// an integer (it will simply add zeroes to the left!)
-						if (width == null) {
-							// 2 sub-cases: if width is not specified, we will simply makes sure
-							// zeroes are padded to the left
-							// Example: %(.3d
-							// But first: stupid case with precision zero: return empty string
-							if ("0".equals(precision)) {
+					// Integers: a bit more complicated!
+					case "d":
+					case "x":
+					case "X":
+					case "o":
+						if (precision == null) {
+							// If precision is not specified, Java's formatter works pretty much
+							// just like C's sprintf().
+							// We only need to make sure an integer is passed
+							// Example: %+03d
+							percentMatcher.appendReplacement(formatResultBuilder, "");
+							formatter.format(formatSpecifier, toLong(arr[argumentIndex]));
+							break;
+						} else {
+							// If precision is specified, we need to process this case manually
+							// because Java's formatter doesn't support specifying precision for
+							// an integer (it will simply add zeroes to the left!)
+							if (width == null) {
+								// 2 sub-cases: if width is not specified, we will simply makes sure
+								// zeroes are padded to the left
+								// Example: %(.3d
+								// But first: stupid case with precision zero: return empty string
+								if ("0".equals(precision)) {
+									percentMatcher.appendReplacement(formatResultBuilder, "");
+									break;
+								}
+								StringBuilder integerFormatStringBuilder = new StringBuilder(prefix);
+								integerFormatStringBuilder.append('%');
+								if (options != null) {
+									integerFormatStringBuilder.append(options);
+								}
+								if (options == null || (!options.contains("0") && !precision.startsWith("0"))) {
+									integerFormatStringBuilder.append("0");
+								}
+								// For negative number, increase precision by 1, because it's going to be used
+								// as width
+								if ("d".equals(conversion) && (toLong(arr[argumentIndex]) < 0 || hasPlusSign(options))) {
+									precision = String.valueOf(Integer.parseInt(precision) + 1);
+								}
+								integerFormatStringBuilder.append(precision);
+								integerFormatStringBuilder.append(conversion);
 								percentMatcher.appendReplacement(formatResultBuilder, "");
+								formatter.format(integerFormatStringBuilder.toString(), toLong(arr[argumentIndex]));
 								break;
 							}
+
+							// If width is specified, we will go through 2 formatter calls
+							// 1. %0<n>d with the precision n
+							// 2. %<n>s with the width
 							StringBuilder integerFormatStringBuilder = new StringBuilder(prefix);
 							integerFormatStringBuilder.append('%');
-							if (options != null) { integerFormatStringBuilder.append(options); }
-							if (options == null || !options.contains("0") && !precision.startsWith("0")) {
-								integerFormatStringBuilder.append("0");
+							if (options != null) {
+								integerFormatStringBuilder.append(options);
 							}
-							// For negative number, increase precision by 1, because it's going to be used
-							// as width
-							if ("d".equals(conversion)
-								&& (toLong(arr[argumentIndex]) < 0
-									|| options != null && options.contains("+")))
-							{
-								precision = String.valueOf(Integer.parseInt(precision) + 1);
+							if (options == null || (!options.contains("0") && !precision.startsWith("0"))) {
+								integerFormatStringBuilder.append("0");
 							}
 							integerFormatStringBuilder.append(precision);
 							integerFormatStringBuilder.append(conversion);
 							percentMatcher.appendReplacement(formatResultBuilder, "");
-							formatter.format(integerFormatStringBuilder.toString(), toLong(arr[argumentIndex]));
-							break;
+							String renderedPrecision = String.format(
+								integerFormatStringBuilder.toString(),
+								toLong(arr[argumentIndex])
+							);
+							formatter.format("%" + width + "s", renderedPrecision);
 						}
-
-						// If width is specified, we will go through 2 formatter calls
-						// 1. %0<n>d with the precision n
-						// 2. %<n>s with the width
-						StringBuilder integerFormatStringBuilder = new StringBuilder(prefix);
-						integerFormatStringBuilder.append('%');
-						if (options != null) { integerFormatStringBuilder.append(options); }
-						if (options == null || !options.contains("0") && !precision.startsWith("0")) {
-							integerFormatStringBuilder.append("0");
-						}
-						integerFormatStringBuilder.append(precision);
-						integerFormatStringBuilder.append(conversion);
+						break;
+					// Float and double: simple, we just need to make sure to pass a double
+					case "e":
+					case "E":
+					case "f":
+					case "a":
+					case "A":
 						percentMatcher.appendReplacement(formatResultBuilder, "");
-						String renderedPrecision = String.format(integerFormatStringBuilder.toString(), toLong(arr[argumentIndex]));
-						formatter.format("%" + width + "s", renderedPrecision);
-					}
-					break;
-
-				// Float and double: simple, we just need to make sure to pass a double
-				case "e":
-				case "E":
-				case "f":
-				case "a":
-				case "A":
-					percentMatcher.appendReplacement(formatResultBuilder, "");
-					formatter.format(formatSpecifier, toDouble(arr[argumentIndex]));
-					break;
-
-				// %g is a bit tricky: if the result of the formatting is a simple decimal notation
-				// we need to remove the trailing zeroes that Java adds for nothing (like 2.00000)
-				case "g":
-				case "G":
-					String tempFormatResult = String.format(locale, formatSpecifier, toDouble(arr[argumentIndex]));
-					if ((tempFormatResult.indexOf('.') > -1 || tempFormatResult.indexOf(',') > -1) && tempFormatResult.indexOf('e') == -1 && tempFormatResult.indexOf('E') == -1) {
-						while (tempFormatResult.endsWith("0")) {
-							tempFormatResult = tempFormatResult.substring(0, tempFormatResult.length() - 1);
+						formatter.format(formatSpecifier, toDouble(arr[argumentIndex]));
+						break;
+					// %g is a bit tricky: if the result of the formatting is a simple decimal notation
+					// we need to remove the trailing zeroes that Java adds for nothing (like 2.00000)
+					case "g":
+					case "G":
+						String tempFormatResult = String.format(locale, formatSpecifier, toDouble(arr[argumentIndex]));
+						if (
+							(tempFormatResult.indexOf('.') > -1 || tempFormatResult.indexOf(',') > -1) &&
+							tempFormatResult.indexOf('e') == -1 &&
+							tempFormatResult.indexOf('E') == -1
+						) {
+							while (tempFormatResult.endsWith("0")) {
+								tempFormatResult = tempFormatResult.substring(0, tempFormatResult.length() - 1);
+							}
+							if (tempFormatResult.endsWith(".") || tempFormatResult.endsWith(",")) {
+								tempFormatResult = tempFormatResult.substring(0, tempFormatResult.length() - 1);
+							}
 						}
-						if (tempFormatResult.endsWith(".") || tempFormatResult.endsWith(",")) {
-							tempFormatResult = tempFormatResult.substring(0, tempFormatResult.length() - 1);
-						}
-					}
-					percentMatcher.appendReplacement(formatResultBuilder, tempFormatResult);
-					break;
-
-				// Char: simple, we just need to make sure to pass a char or integer
-				case "c":
-					percentMatcher.appendReplacement(formatResultBuilder, "");
-					formatter.format(formatSpecifier, toChar(arr[argumentIndex]));
-					break;
-
-				default:
-					percentMatcher.appendReplacement(formatResultBuilder, "");
-					formatter.format(formatSpecifier, arr[argumentIndex]);
+						percentMatcher.appendReplacement(formatResultBuilder, tempFormatResult);
+						break;
+					// Char: simple, we just need to make sure to pass a char or integer
+					case "c":
+						percentMatcher.appendReplacement(formatResultBuilder, "");
+						formatter.format(formatSpecifier, toChar(arr[argumentIndex]));
+						break;
+					default:
+						percentMatcher.appendReplacement(formatResultBuilder, "");
+						formatter.format(formatSpecifier, arr[argumentIndex]);
 				}
 
 				// Pass to the next argument (for the next format specifier we'll find)
 				argumentIndex++;
 			}
-		} catch (IllegalFormatException e) { /* do nothing */ } // NOPMD
+		} catch (IllegalFormatException e) { // NOPMD
+			/* do nothing */
+		}
 
 		// Now append the rest that didn't match our pattern
 		percentMatcher.appendTail(formatResultBuilder);
 
 		// The result!
 		return formatResultBuilder.toString();
+	}
 
+	/**
+	 * Whether options has a '+' sign.
+	 *
+	 * @param options Options to check.
+	 * @return true if options contains a '+' sign
+	 */
+	private static boolean hasPlusSign(final String options) {
+		return options != null && options.contains("+");
 	}
 
 	/**
@@ -506,6 +516,4 @@ public class Printf4J {
 	public static void printf(final PrintStream ps, final Locale locale, final String format, final Object... arr) {
 		ps.print(sprintf(locale, format, arr));
 	}
-
-
 }
