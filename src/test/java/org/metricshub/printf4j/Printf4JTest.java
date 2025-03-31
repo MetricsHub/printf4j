@@ -1,40 +1,38 @@
-package org.sentrysoftware;
+package org.metricshub.printf4j;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.metricshub.printf4j.Printf4J.sprintf;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.sentrysoftware.printf4j.Printf4J;
 
-import static org.sentrysoftware.printf4j.Printf4J.*;
-
-public class SprintfTest {
+class Printf4JTest {
 
 	@Test
 	public void testPlus() {
-		  assertEquals("+42", sprintf("%+d", 42));
-		  assertEquals("-42", sprintf("%+d", -42));
-		  assertEquals("  +42", sprintf("%+5d", 42));
-		  assertEquals("  -42", sprintf("%+5d", -42));
-		  assertEquals("            +42", sprintf("%+15d", 42));
-		  assertEquals("            -42", sprintf("%+15d", -42));
-		  assertEquals("Hello testing", sprintf("%+s", "Hello testing"));
-		  assertEquals("+1024", sprintf("%+d", 1024));
-		  assertEquals("-1024", sprintf("%+d", -1024));
-		  assertEquals("+1024", sprintf("%+i", 1024));
-		  assertEquals("-1024", sprintf("%+i", -1024));
-		  assertEquals("1024", sprintf("%+u", 1024));
-		  assertEquals("4294966272", sprintf("%+u", 4294966272L));
-		  assertEquals("777", sprintf("%+o", 511));
-		  assertEquals("37777777001", sprintf("%+o", 4294966785L));
-		  assertEquals("1234abcd", sprintf("%+x", 305441741));
-		  assertEquals("edcb5433", sprintf("%+x", 3989525555L));
-		  assertEquals("1234ABCD", sprintf("%+X", 305441741));
-		  assertEquals("EDCB5433", sprintf("%+X", 3989525555L));
-		  assertEquals("x", sprintf("%+c", 'x'));
-//		  assertEquals("0", sprintf("%+.0d", 0));
+		assertEquals("+42", sprintf("%+d", 42));
+		assertEquals("-42", sprintf("%+d", -42));
+		assertEquals("  +42", sprintf("%+5d", 42));
+		assertEquals("  -42", sprintf("%+5d", -42));
+		assertEquals("            +42", sprintf("%+15d", 42));
+		assertEquals("            -42", sprintf("%+15d", -42));
+		assertEquals("Hello testing", sprintf("%+s", "Hello testing"));
+		assertEquals("+1024", sprintf("%+d", 1024));
+		assertEquals("-1024", sprintf("%+d", -1024));
+		assertEquals("+1024", sprintf("%+i", 1024));
+		assertEquals("-1024", sprintf("%+i", -1024));
+		assertEquals("1024", sprintf("%+u", 1024));
+		assertEquals("4294966272", sprintf("%+u", 4294966272L));
+		assertEquals("777", sprintf("%+o", 511));
+		assertEquals("37777777001", sprintf("%+o", 4294966785L));
+		assertEquals("1234abcd", sprintf("%+x", 305441741));
+		assertEquals("edcb5433", sprintf("%+x", 3989525555L));
+		assertEquals("1234ABCD", sprintf("%+X", 305441741));
+		assertEquals("EDCB5433", sprintf("%+X", 3989525555L));
+		assertEquals("x", sprintf("%+c", 'x'));
+		//		  assertEquals("0", sprintf("%+.0d", 0));
 	}
-	
+
 	@Test
 	public void testBlank() {
 		assertEquals(" 42", sprintf("% d", 42));
@@ -61,7 +59,7 @@ public class SprintfTest {
 		assertEquals("EDCB5433", sprintf("% X", 3989525555L));
 		assertEquals("x", sprintf("% c", 'x'));
 	}
-	
+
 	@Test
 	public void testZero() {
 		assertEquals("42", sprintf("%0d", 42));
@@ -75,7 +73,7 @@ public class SprintfTest {
 		assertEquals("00000000042.988", sprintf("%015.3f", 42.9876));
 		assertEquals("-00000042.98760", sprintf("%015.5f", -42.9876));
 	}
-	
+
 	@Test
 	public void testMinus() {
 		assertEquals("42", sprintf("%-d", 42));
@@ -98,19 +96,17 @@ public class SprintfTest {
 		assertEquals("-42            ", sprintf("%0-15d", -42));
 		assertEquals("-4.200e+01     ", sprintf("%0-15.3e", -42.));
 		assertEquals("-42.0          ", sprintf("%0-15.3g", -42.));
-
 	}
-	
+
 	@Test
 	public void testHash() {
 		assertEquals("", sprintf("%#.0x", 0));
-//		assertEquals("0", sprintf("%#.1x", 0)); // This is the real expected behavior, which is wrong IMO
+		//		assertEquals("0", sprintf("%#.1x", 0)); // This is the real expected behavior, which is wrong IMO
 		assertEquals("0x0", sprintf("%#.1x", 0));
 		assertEquals("", sprintf("%#.0llx", 0));
 		assertEquals("0x0000614e", sprintf("%#.8x", 0x614e)); // This is the real expected behavior
-//		assertEquals("0b110", sprintf("%#b", 6)); // Binary is not supported for now
+		//		assertEquals("0b110", sprintf("%#b", 6)); // Binary is not supported for now
 	}
-
 
 	@Test
 	public void testSpecifier() {
@@ -130,7 +126,7 @@ public class SprintfTest {
 		assertEquals("EDCB5433", sprintf("%X", 3989525555L));
 		assertEquals("%", sprintf("%%"));
 	}
-	
+
 	@Test
 	public void testWidth() {
 		assertEquals("Hello testing", sprintf("%1s", "Hello testing"));
@@ -148,7 +144,7 @@ public class SprintfTest {
 		assertEquals("EDCB5433", sprintf("%1X", 3989525555L));
 		assertEquals("x", sprintf("%1c", 'x'));
 	}
-	
+
 	@Test
 	public void testWidth20() {
 		assertEquals("               Hello", sprintf("%20s", "Hello"));
@@ -166,7 +162,7 @@ public class SprintfTest {
 		assertEquals("            EDCB5433", sprintf("%20X", 3989525555L));
 		assertEquals("                   x", sprintf("%20c", 'x'));
 	}
-	
+
 	@Test
 	public void testWidthStar20() {
 		assertEquals("               Hello", sprintf("%*s", 20, "Hello"));
@@ -184,7 +180,7 @@ public class SprintfTest {
 		assertEquals("            EDCB5433", sprintf("%*X", 20, 3989525555L));
 		assertEquals("                   x", sprintf("%*c", 20, 'x'));
 	}
-	
+
 	@Test
 	public void testMinus20() {
 		assertEquals("Hello               ", sprintf("%-20s", "Hello"));
@@ -205,9 +201,9 @@ public class SprintfTest {
 		assertEquals("|    9| |9 | |    9|", sprintf("|%5d| |%-2d| |%5d|", 9, 9, 9));
 		assertEquals("|   10| |10| |   10|", sprintf("|%5d| |%-2d| |%5d|", 10, 10, 10));
 		assertEquals("|    9| |9           | |    9|", sprintf("|%5d| |%-12d| |%5d|", 9, 9, 9));
-		assertEquals("|   10| |10          | |   10|", sprintf("|%5d| |%-12d| |%5d|", 10, 10, 10));  
+		assertEquals("|   10| |10          | |   10|", sprintf("|%5d| |%-12d| |%5d|", 10, 10, 10));
 	}
-	
+
 	@Test
 	public void testZeroMinus20() {
 		assertEquals("Hello               ", sprintf("%0-20s", "Hello"));
@@ -225,7 +221,7 @@ public class SprintfTest {
 		assertEquals("EDCB5433            ", sprintf("%0-20X", 3989525555L));
 		assertEquals("x                   ", sprintf("%0-20c", 'x'));
 	}
-	
+
 	@Test
 	public void testPadding20() {
 		assertEquals("00000000000000001024", sprintf("%020d", 1024));
@@ -241,7 +237,7 @@ public class SprintfTest {
 		assertEquals("0000000000001234ABCD", sprintf("%020X", 305441741));
 		assertEquals("000000000000EDCB5433", sprintf("%020X", 3989525555L));
 	}
-	
+
 	@Test
 	public void testPaddingPrecision20() {
 		assertEquals("00000000000000001024", sprintf("%.20d", 1024));
@@ -257,7 +253,7 @@ public class SprintfTest {
 		assertEquals("0000000000001234ABCD", sprintf("%.20X", 305441741));
 		assertEquals("000000000000EDCB5433", sprintf("%.20X", 3989525555L));
 	}
-	
+
 	@Test
 	public void testPaddingHashZero20() {
 		assertEquals("00000000000000001024", sprintf("%#020d", 1024));
@@ -273,7 +269,7 @@ public class SprintfTest {
 		assertEquals("0X00000000001234ABCD", sprintf("%#020X", 305441741));
 		assertEquals("0X0000000000EDCB5433", sprintf("%#020X", 3989525555L));
 	}
-	
+
 	@Test
 	public void testPaddingHash20() {
 		assertEquals("                1024", sprintf("%#20d", 1024));
@@ -282,14 +278,14 @@ public class SprintfTest {
 		assertEquals("               -1024", sprintf("%#20i", -1024));
 		assertEquals("                1024", sprintf("%#20u", 1024));
 		assertEquals("          4294966272", sprintf("%#20u", 4294966272L));
-//		assertEquals("                0777", sprintf("%#20o", 511));
-//		assertEquals("        037777777001", sprintf("%#20o", 4294966785L));
-//		assertEquals("          0x1234abcd", sprintf("%#20x", 305441741));
-//		assertEquals("          0xedcb5433", sprintf("%#20x", 3989525555L));
-//		assertEquals("          0X1234ABCD", sprintf("%#20X", 305441741));
-//		assertEquals("          0XEDCB5433", sprintf("%#20X", 3989525555L));
+		//		assertEquals("                0777", sprintf("%#20o", 511));
+		//		assertEquals("        037777777001", sprintf("%#20o", 4294966785L));
+		//		assertEquals("          0x1234abcd", sprintf("%#20x", 305441741));
+		//		assertEquals("          0xedcb5433", sprintf("%#20x", 3989525555L));
+		//		assertEquals("          0X1234ABCD", sprintf("%#20X", 305441741));
+		//		assertEquals("          0XEDCB5433", sprintf("%#20X", 3989525555L));
 	}
-	
+
 	@Test
 	@Disabled
 	public void testPadding20Dot5() {
@@ -304,9 +300,9 @@ public class SprintfTest {
 		assertEquals("            1234abcd", sprintf("%20.5x", 305441741));
 		assertEquals("          00edcb5433", sprintf("%20.10x", 3989525555L));
 		assertEquals("            1234ABCD", sprintf("%20.5X", 305441741));
-		assertEquals("          00EDCB5433", sprintf("%20.10X", 3989525555L));  
+		assertEquals("          00EDCB5433", sprintf("%20.10X", 3989525555L));
 	}
-	
+
 	@Test
 	@Disabled
 	public void testPaddingNegativeNumbers() {
@@ -321,7 +317,7 @@ public class SprintfTest {
 		assertEquals("-05", sprintf("%03d", -5));
 		assertEquals("-005", sprintf("%04d", -5));
 	}
-	
+
 	@Test
 	@Disabled
 	public void testPaddingNegativeFloat() {
@@ -344,7 +340,7 @@ public class SprintfTest {
 		assertEquals("-05E+00", sprintf("%07.0E", -5.));
 		assertEquals("-05", sprintf("%03.0g", -5.));
 	}
-	
+
 	@Test
 	@Disabled
 	public void testLength() {
@@ -366,7 +362,10 @@ public class SprintfTest {
 		assertEquals("                    ", sprintf("%20.o", 0L));
 		assertEquals("            1234abcd", sprintf("%20.x", 305441741));
 		assertEquals("                                          1234abcd", sprintf("%50.x", 305441741));
-		assertEquals("                                          1234abcd     12345", sprintf("%50.x%10.u", 305441741, 12345));
+		assertEquals(
+			"                                          1234abcd     12345",
+			sprintf("%50.x%10.u", 305441741, 12345)
+		);
 		assertEquals("            edcb5433", sprintf("%20.0x", 3989525555L));
 		assertEquals("                    ", sprintf("%20.x", 0L));
 		assertEquals("            1234ABCD", sprintf("%20.X", 305441741));
@@ -375,7 +374,7 @@ public class SprintfTest {
 		assertEquals("  ", sprintf("%02.0u", 0L));
 		assertEquals("  ", sprintf("%02.0d", 0));
 	}
-	
+
 	@Test
 	@Disabled
 	public void testFloat() {
@@ -426,7 +425,7 @@ public class SprintfTest {
 		// out of range for float: should switch to exp notation if supported
 		assertEquals("1.0e+20", sprintf("%.1f", 1E20));
 	}
-	
+
 	@Test
 	@Disabled
 	public void testTypes() {
@@ -461,15 +460,14 @@ public class SprintfTest {
 		assertEquals("255", sprintf("%hhu", 0xFFFFL));
 		assertEquals("13398", sprintf("%hu", 0x123456L));
 		assertEquals("Test16 65535", sprintf("%s%hhi %hu", "Test", 10000, 0xFFFFFFFF));
-
 	}
-	
+
 	@Test
 	@Disabled
 	public void testUnknown() {
-		assertEquals("kmarco", sprintf("%kmarco", 42, 37));  
+		assertEquals("kmarco", sprintf("%kmarco", 42, 37));
 	}
-	
+
 	@Test
 	@Disabled
 	public void testStringLength() {
@@ -479,9 +477,9 @@ public class SprintfTest {
 		assertEquals("", sprintf("%.7s", ""));
 		assertEquals("1234ab", sprintf("%.4s%.2s", "123456", "abcdef"));
 		assertEquals(".2s", sprintf("%.4.2s", "123456"));
-		assertEquals("123", sprintf("%.*s", 3, "123456"));  
+		assertEquals("123", sprintf("%.*s", 3, "123456"));
 	}
-	
+
 	@Test
 	@Disabled
 	public void testMisc() {
@@ -495,7 +493,7 @@ public class SprintfTest {
 		assertEquals("0.33", sprintf("%.*g", 2, 0.33333333));
 		assertEquals("3.33e-01", sprintf("%.*e", 2, 0.33333333));
 	}
-	
+
 	@Test
 	public void testChar() {
 		assertEquals("A", sprintf("%c", 65));
@@ -510,7 +508,7 @@ public class SprintfTest {
 		Object nothing = null;
 		assertEquals("\u0000", sprintf("%c", nothing));
 	}
-	
+
 	@Test
 	public void testToChar() {
 		assertEquals('A', Printf4J.toChar(65));
@@ -527,7 +525,7 @@ public class SprintfTest {
 		Object nothing = null;
 		assertEquals('\u0000', Printf4J.toChar(nothing));
 	}
-	
+
 	@Test
 	public void testToLong() {
 		assertEquals(65L, Printf4J.toLong('A'));
@@ -547,7 +545,7 @@ public class SprintfTest {
 		Object nothing = null;
 		assertEquals(0L, Printf4J.toLong(nothing));
 	}
-	
+
 	@Test
 	public void testToDouble() {
 		assertEquals(65.0, Printf4J.toDouble('A'));
@@ -568,5 +566,4 @@ public class SprintfTest {
 		Object nothing = null;
 		assertEquals(0.0, Printf4J.toDouble(nothing));
 	}
-
 }

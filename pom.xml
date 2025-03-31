@@ -1,13 +1,14 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.sentrysoftware</groupId>
+		<groupId>org.metricshub</groupId>
 		<artifactId>oss-parent</artifactId>
 		<version>2</version>
 	</parent>
 
-	<groupId>org.sentrysoftware</groupId>
 	<artifactId>printf4j</artifactId>
 	<version>0.9.08-SNAPSHOT</version>
 
@@ -15,11 +16,11 @@
 	<description>Java implementation of C's *printf() functions</description>
 
 	<organization>
-		<name>Sentry Software</name>
-		<url>https://sentrysoftware.org</url>
+		<name>MetricsHub</name>
+		<url>https://metricshub.org</url>
 	</organization>
 
-	<url>https://sentrysoftware.org/printf4j</url>
+	<url>https://metricshub.org/printf4j</url>
 	<inceptionYear>2023</inceptionYear>
 
 	<licenses>
@@ -32,19 +33,19 @@
 
 	<issueManagement>
 		<system>GitHub</system>
-		<url>https://github.com/sentrysoftware/printf4j/issues/</url>
+		<url>https://github.com/metricshub/printf4j/issues/</url>
 	</issueManagement>
 
 	<scm>
-		<connection>scm:git:https://github.com/sentrysoftware/printf4j.git</connection>
-		<url>https://github.com/sentrysoftware/printf4j</url>
+		<connection>scm:git:https://github.com/metricshub/printf4j.git</connection>
+		<url>https://github.com/metricshub/printf4j</url>
 		<tag>HEAD</tag>
 	</scm>
 
 	<developers>
 		<developer>
 			<name>Bertrand Martin (@bertysentry)</name>
-			<email>bertrand@sentrysoftware.com</email>
+			<email>bertrand@metricshub.com</email>
 			<roles>
 				<role>Project founder</role>
 			</roles>
@@ -56,7 +57,8 @@
 		<maven.compiler.release>8</maven.compiler.release>
 
 		<!-- Reproducible Build -->
-		<!-- See https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
+		<!-- See
+		https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
 		<project.build.outputTimestamp>2024-01-31T22:07:06Z</project.build.outputTimestamp>
 	</properties>
 
@@ -84,5 +86,33 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- Prettier -->
+			<plugin>
+				<groupId>com.hubspot.maven.plugins</groupId>
+				<artifactId>prettier-maven-plugin</artifactId>
+				<version>0.21</version>
+				<configuration>
+					<prettierJavaVersion>2.5.0</prettierJavaVersion>
+					<ignoreConfigFile>false</ignoreConfigFile>
+					<ignoreEditorConfig>false</ignoreEditorConfig>
+					<inputGlobs>
+						<inputGlob>src/main/java/**/*.java</inputGlob>
+						<inputGlob>src/test/java/**/*.java</inputGlob>
+					</inputGlobs>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
