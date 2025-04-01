@@ -8,7 +8,7 @@
 	</parent>
 
 	<artifactId>printf4j</artifactId>
-	<version>0.9.08</version>
+	<version>0.9.09-SNAPSHOT</version>
 
 	<name>Printf4J</name>
 	<description>Java implementation of C's *printf() functions</description>
@@ -37,7 +37,7 @@
 	<scm>
 		<connection>scm:git:https://github.com/metricshub/printf4j.git</connection>
 		<url>https://github.com/metricshub/printf4j</url>
-		<tag>v0.9.08</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 	<developers>
@@ -57,7 +57,7 @@
 		<!-- Reproducible Build -->
 		<!-- See
 		https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
-		<project.build.outputTimestamp>2025-04-01T15:35:13Z</project.build.outputTimestamp>
+		<project.build.outputTimestamp>2025-04-01T15:36:03Z</project.build.outputTimestamp>
 	</properties>
 
 	<dependencyManagement>
