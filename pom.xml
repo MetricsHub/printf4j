@@ -1,6 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -10,7 +8,7 @@
 	</parent>
 
 	<artifactId>printf4j</artifactId>
-	<version>0.9.08-SNAPSHOT</version>
+	<version>0.9.09-SNAPSHOT</version>
 
 	<name>Printf4J</name>
 	<description>Java implementation of C's *printf() functions</description>
@@ -59,7 +57,7 @@
 		<!-- Reproducible Build -->
 		<!-- See
 		https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
-		<project.build.outputTimestamp>2024-01-31T22:07:06Z</project.build.outputTimestamp>
+		<project.build.outputTimestamp>2025-04-01T15:36:03Z</project.build.outputTimestamp>
 	</properties>
 
 	<dependencyManagement>
