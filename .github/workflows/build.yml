@@ -6,4 +6,4 @@ on:
 
 jobs:
   build:
-    uses: metricshub/workflows/.github/workflows/maven-build.yml@v2
+    uses: metricshub/workflows/.github/workflows/maven-build.yml@v3
